@@ -34,7 +34,7 @@ def _find_length_helepr(n, curr_path, curr_word, paths, board, words_list):
     if len(curr_word) > n:
         return
     if len(curr_word) == n:
-        if curr_word and check_curr_word(curr_word,words_list):
+        if curr_word and check_curr_word(curr_word, words_list):
             paths.append((curr_word, curr_path))
         return paths
 
@@ -47,7 +47,7 @@ def _find_length_helepr(n, curr_path, curr_word, paths, board, words_list):
 def check_curr_word(curr_word, words_list):
     if curr_word:
         for word in words_list:
-            if word.startswith(curr_word):
+            if curr_word == word[:len(curr_word)]:
                 return True
     return False
 
@@ -72,13 +72,13 @@ def get_valid_steps(cord, path):
     steps = [(cord[0] + 1, cord[1]), (cord[0] + 1, cord[1] + 1), (cord[0] + 1, cord[1] -1),
                    (cord[0] - 1, cord[1]), (cord[0] - 1, cord[1] + 1), (cord[0] - 1, cord[1] -1),
                    (cord[0], cord[1] + 1), (cord[0], cord[1] - 1)]
-    valid_steps = filter(lambda x: check_valid_coords(x, path), steps)
+    valid_steps = set(filter(lambda x: check_valid_coords(x, path), steps))
     return valid_steps
 
 if __name__ == "__main__":
     board = helper.randomize_board()
     words = load_words_dict("boggle_dict.txt")
-    for i in range(3,17):
+    for i in range(3, 17):
         print(i)
         start = time.time()
         print(find_length_n_words(i, board, words))

@@ -1,6 +1,7 @@
 import boggle_board_randomizer as helper
 import time
 
+
 def load_words_dict(file_path):
     word_dict = dict()
     with open(file_path, "r") as word_file:
@@ -75,6 +76,14 @@ def get_valid_steps(cord, path):
     valid_steps = set(filter(lambda x: check_valid_coords(x, path), steps))
     return valid_steps
 
+class GameLogic:
+    def __init__(self):
+        self.path = []
+
+    def update_path(self, cord):
+        self.path.append(cord)
+        print(self.path)
+
 if __name__ == "__main__":
     board = helper.randomize_board()
     words = load_words_dict("boggle_dict.txt")
@@ -84,23 +93,3 @@ if __name__ == "__main__":
         print(find_length_n_words(i, board, words))
         end = time.time()
         print(end - start)
-
-
-
-
-# if check_curr_path(n,curr_path,board, words):
-#     _find_length_helepr(n, curr_path + [(curr_path[-1][0], curr_path[-1][1] + 1)], pathes,board, words)
-# if check_curr_path(n,curr_path,board, words):
-#     _find_length_helepr(n, curr_path + [(curr_path[-1][0], curr_path[-1][1] - 1)], pathes,board, words)
-# if check_curr_path(n,curr_path,board, words):
-#     _find_length_helepr(n, curr_path + [(curr_path[-1][0] + 1, curr_path[-1][1])], pathes,board, words)
-# if check_curr_path(n,curr_path,board, words):
-#     _find_length_helepr(n, curr_path + [(curr_path[-1][0] - 1, curr_path[-1][1])], pathes,board, words)
-# if check_curr_path(n,curr_path,board, words):
-#     _find_length_helepr(n, curr_path + [(curr_path[-1][0] - 1, curr_path[-1][1] + 1)], pathes,board, words)
-# if check_curr_path(n,curr_path,board, words):
-#     _find_length_helepr(n, curr_path + [(curr_path[-1][0] - 1, curr_path[-1][1] - 1)], pathes,board, words)
-# if check_curr_path(n,curr_path,board, words):
-#     _find_length_helepr(n, curr_path + [(curr_path[-1][0] + 1, curr_path[-1][1] + 1)], pathes,board, words)
-# if check_curr_path(n,curr_path,board, words):
-#     _find_length_helepr(n, curr_path + [(curr_path[-1][0] + 1, curr_path[-1][1] - 1)], pathes,board, words)

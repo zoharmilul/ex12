@@ -14,8 +14,9 @@ def is_valid_path(board, path, words):
     for i, coord in enumerate(path):
         if not check_valid_coords(coord, path):
             return
-        if i != len(path) - 1 and check_valid_step(path[i], path[i + 1]):
-            continue
+        if i < len(path) - 1:
+            if not check_valid_step(path[i], path[i + 1]):
+                return
 
     word = _get_word(board, path)
     if word in words:
@@ -79,6 +80,7 @@ def get_valid_steps(cord, path):
 
 if __name__ == "__main__":
     board = helper.randomize_board()
+
     words = load_words_dict("boggle_dict.txt")
     for i in range(3, 17):
         print(i)

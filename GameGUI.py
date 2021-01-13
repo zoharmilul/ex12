@@ -34,7 +34,7 @@ class BoardGUI:
 
         self._arttibute_frame = tk.Frame(self._lower_frame)
         self._clock = tk.Label(self._arttibute_frame, text ="Press start to play", fg ="yellow", bg ="black", font = ("arial", 15))
-        self._score_label = tk.Label(self._arttibute_frame, text ="Score: " + str(self._score_value), font = ("arial", 15))
+        self._score_label = tk.Label(self._arttibute_frame, text ="Score: 0", font = ("arial", 15))
         self._found_words = tk.Label(self._arttibute_frame, text ="Found words: \n YOU \n ARE \n A \n Bitch", font = ("arial", 15))
         self._enter_button = tk.Button(self._arttibute_frame, text ="Enter")
         self._create_buttons_in_lower_frame(self._board)
@@ -90,7 +90,7 @@ class BoardGUI:
             button['background'] = LETTER_REGULAR_COLOR
 
         def _on_click(event):
-            button["background"] = "skyblue"
+            button["background"] = BUTTON_ACTIVE_COLOR
 
         button.bind("<Enter>", _on_enter)
         button.bind("<Leave>", _on_leave)
@@ -100,7 +100,7 @@ class BoardGUI:
 
     def set_score(self, score):
         self._score_value += score
-        self._score_label["text"] = "Score: " + str(self._score_value)
+        self._score_label["text"] = str(self._score_value)
 
     def pressed_enter(self):
         self.update_text_label("")

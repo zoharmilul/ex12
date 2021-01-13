@@ -15,10 +15,10 @@ class GameController:
             action = self.create_action(button, "letter")
             self.gui.set_button_command(button, action)
 
-        action = self.create_action(self.gui._start_button,"start")
-        self.gui.set_button_command(self.gui._start_button,action )
+        action = self.create_action(self.gui._start_button, "start")
+        self.gui.set_button_command(self.gui._start_button, action)
 
-        action = self.create_action(self.gui._delete_button,"delete")
+        action = self.create_action(self.gui._delete_button, "delete")
         self.gui.set_button_command(self.gui._delete_button, action)
 
         action = self.create_action(self.gui._delete_button, "enter")
@@ -32,7 +32,6 @@ class GameController:
     def update_path(self, cord):
         self.path.append(cord)
         print(self.path)
-
 
     def create_action(self, button, type):
         if type == "letter":
@@ -67,9 +66,10 @@ class GameController:
                 print(utls.is_valid_path(self.board, self.path, self.words))
                 self.gui.pressed_enter()
                 word = utls.is_valid_path(self.board, self.path, self.words)
-                self.path = []
                 if word:
-                    self.gui.set_score(len(word)**2)
+                    score = len(word)**2
+                    self.gui.set_score(score)
+                self.path = []
             return inner
 
     def start_game(self):

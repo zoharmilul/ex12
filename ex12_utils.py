@@ -76,13 +76,6 @@ def get_valid_steps(cord, path):
     valid_steps = set(filter(lambda x: check_valid_coords(x, path), steps))
     return valid_steps
 
-class GameLogic:
-    def __init__(self):
-        self.path = []
-
-    def update_path(self, cord):
-        self.path.append(cord)
-        print(self.path)
 
 if __name__ == "__main__":
     board = helper.randomize_board()

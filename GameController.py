@@ -66,8 +66,9 @@ class GameController:
                 print(utls.is_valid_path(self.board, self.path, self.words))
                 self.gui.pressed_enter()
                 word = utls.is_valid_path(self.board, self.path, self.words)
-                if word:
-                    score = len(word)**2
+                if word and word not in self.gui.found_words_text:
+                    self.gui.update_words_label(word)
+                    score = (len(word))**2
                     self.gui.set_score(score)
                 self.path = []
             return inner
@@ -81,5 +82,4 @@ if __name__ == '__main__':
     words_list = utls.load_words_dict("boggle_dict.txt")
     controller = GameController(board, words_list)
     controller.start_game()
-
 

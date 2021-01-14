@@ -11,6 +11,8 @@ def load_words_dict(file_path):
 
 
 def is_valid_path(board, path, words):
+    if not path:
+        return
     for i, coord in enumerate(path):
         if not check_valid_coords(coord, path):
             return
@@ -64,10 +66,10 @@ def check_valid_step(coord1, coord2):
 
 def _get_word(board, path):
     word = ""
-    if check_valid_coords(path[-1], path):
-        for coord in path:
-            word += board[coord[0]][coord[1]]
-        return word
+    # if check_valid_coords(path[-1], path): ## didnt write the letter if you pressed twice
+    for coord in path:
+        word += board[coord[0]][coord[1]]
+    return word
 
 
 def get_valid_steps(cord, path):

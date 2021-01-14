@@ -1,6 +1,5 @@
 import tkinter as tk
-
-
+from tkinter import messagebox
 LETTER_HOVER_COLOR = "lightblue"
 LETTER_REGULAR_COLOR = "lightgray"
 BUTTON_HOVER_COLOR = 'gray'
@@ -13,9 +12,8 @@ BUTTON_STYLE = {"font": ("arial", 15),
                 "bg": REGULAR_COLOR,
                 "activebackground": BUTTON_ACTIVE_COLOR}
 
+
 class BoardGUI:
-
-
 
     def __init__(self, board):
         self._root = tk.Tk()
@@ -23,20 +21,24 @@ class BoardGUI:
         self._word = "welcome"
         self._buttons = dict()
         self._score_value = 0
-
         self._outer_frame = tk.Frame(self._root)
-        self._text_label = tk.Label(self._outer_frame, text = self._word, font = ("arial", 30))
-        self._delete_button = tk.Button(self._outer_frame, text = "Delete")
+        self._text_label = tk.Label(self._outer_frame, text=self._word, font=("arial", 30))
+        self._delete_button = tk.Button(self._outer_frame, text="Delete")
 
         self._lower_frame = tk.Frame(self._outer_frame)
         self._letters_frame = tk.Frame(self._lower_frame)
         self._start_button = tk.Button(self._outer_frame, text="Start Game!")
 
         self._arttibute_frame = tk.Frame(self._lower_frame)
-        self._clock = tk.Label(self._arttibute_frame, text ="Press start to play", fg ="yellow", bg ="black", font = ("arial", 15))
-        self._score_label = tk.Label(self._arttibute_frame, text ="Score: 0", font = ("arial", 15))
-        self._found_words = tk.Label(self._arttibute_frame, text ="Found words: \n YOU \n ARE \n A \n Bitch", font = ("arial", 15))
-        self._enter_button = tk.Button(self._arttibute_frame, text ="Enter")
+        self._clock = tk.Label(self._arttibute_frame, text="Press start to play", fg="yellow", bg="black",
+                               font=("arial", 15))
+        self._score_label = tk.Label(self._arttibute_frame, text="Score: " + str(self._score_value), font=('arial', 15))
+        self.found_words_text = "Found words: \n"
+        self._found_words_label = tk.Label(self._arttibute_frame, text=self.found_words_text,
+                                           font=("arial", 10))
+
+        # self._found_words_ = tk.Scrollbar(self._arttibute_frame) #todo
+        self._enter_button = tk.Button(self._arttibute_frame, text="Enter")
         self._create_buttons_in_lower_frame(self._board)
         self.pack()
 
@@ -44,19 +46,28 @@ class BoardGUI:
         self._start_button.pack_forget()
         print(self._board)
         self.update_text_label("")
-        self._score_label = 0
-        self.set_timer(180000)
+        # self._score_label = 0
+        self.set_timer(31000)
         for button in self._buttons:
             cord = self.get_button_cord(button)
             button["text"] = self._board[cord[0]][cord[1]]
 
-    def send_message(self, title, msg, options):
-        pass
+    def send_message(self, title, msg):
+        messagebox.showinfo(title, msg)
+
+    def close_window(self):
+        self._root.destroy()
 
     def set_timer(self, count):
-        self._clock["text"] = str(int((count/(1000*60)) % 60)) + ":" + str(int((count/1000) % 60))
+        self._clock["text"] = str(int((count / (1000 * 60)) % 60)) + ":" + str(int((count / 1000) % 60))
+        if count == 30000:
+            messagebox.showinfo("Time is running out", "You have 30 seconds left!")
         if count > 0:
             self._root.after(1000, self.set_timer, count - 1000)
+        if count == 0:
+            self.send_message("GameOver", "Time is up!!!!!!!!!")
+            self.close_window()
+
 
     def _create_buttons_in_lower_frame(self, board):
         for i in range(5):
@@ -72,14 +83,18 @@ class BoardGUI:
         self._word = word
         self._text_label["text"] = self._word
 
+    def update_words_label(self, word):
+        self.found_words_text += word + "\n"
+        self._found_words_label["text"] = self.found_words_text
+
     def set_button_command(self, button, action):
-        button.configure(command = action)
+        button.configure(command=action)
 
     def get_button_cord(self, button):
         return self._buttons[button][1]
 
-    def _make_button(self, button_char, row, col, rowspan = 1, columnspan = 1):
-        button = tk.Button(self._letters_frame, text="", **BUTTON_STYLE )
+    def _make_button(self, button_char, row, col, rowspan=1, columnspan=1):
+        button = tk.Button(self._letters_frame, text="", **BUTTON_STYLE)
         button.grid(row=row, column=col, rowspan=rowspan, columnspan=columnspan, sticky=tk.NSEW)
         self._buttons[button] = [button_char, (row, col)]
 
@@ -100,7 +115,7 @@ class BoardGUI:
 
     def set_score(self, score):
         self._score_value += score
-        self._score_label["text"] = str(self._score_value)
+        self._score_label["text"] = "Score: " + str(self._score_value)
 
     def pressed_enter(self):
         self.update_text_label("")
@@ -115,6 +130,7 @@ class BoardGUI:
         self._arttibute_frame.pack(side=tk.RIGHT)
         self._clock.pack(fill=tk.X, side=tk.TOP)
         self._score_label.pack()
-        self._found_words.pack()
+        self._found_words_label.pack()
+        # self._found_words_.pack(side=tk.RIGHT, fill=tk.Y) #todo
         self._enter_button.pack(fill=tk.X)
-        self._delete_button.pack(side = tk.RIGHT)
+        self._delete_button.pack(side=tk.RIGHT)

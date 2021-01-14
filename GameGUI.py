@@ -18,6 +18,7 @@ class BoardGUI:
     def __init__(self, board):
         self._root = tk.Tk()
         self._board = board
+        self.game_is_on = False
         self._word = "welcome"
         self._buttons = dict()
         self._score_value = 0
@@ -25,38 +26,33 @@ class BoardGUI:
         self._text_label = tk.Label(self._outer_frame, text=self._word, font=("arial", 30))
         self._delete_button = tk.Button(self._outer_frame, text="Delete")
 
+
         self._lower_frame = tk.Frame(self._outer_frame)
         self._letters_frame = tk.Frame(self._lower_frame)
         self._start_button = tk.Button(self._outer_frame, text="Start Game!")
 
         self._arttibute_frame = tk.Frame(self._lower_frame)
         self._clock = tk.Label(self._arttibute_frame, text="Press start to play", fg="yellow", bg="black",
-                               font=("arial", 15))
+                               font=("arial", 12))
         self._score_label = tk.Label(self._arttibute_frame, text="Score: " + str(self._score_value), font=('arial', 15))
         self.found_words_text = "Found words: \n"
         self._found_words_label = tk.Label(self._arttibute_frame, text=self.found_words_text,
                                            font=("arial", 10))
 
-        # self._found_words_ = tk.Scrollbar(self._arttibute_frame) #todo
+        # self._found_words_ = tk.Scrollbar(self._found_words_label) #todo
         self._enter_button = tk.Button(self._arttibute_frame, text="Enter")
         self._create_buttons_in_lower_frame(self._board)
         self.pack()
 
     def start_game(self):
+        self.game_is_on = True
         self._start_button.pack_forget()
         print(self._board)
         self.update_text_label("")
-        # self._score_label = 0
-        self.set_timer(31000)
+        self.set_timer(180000)
         for button in self._buttons:
             cord = self.get_button_cord(button)
             button["text"] = self._board[cord[0]][cord[1]]
-
-    def send_message(self, title, msg):
-        messagebox.showinfo(title, msg)
-
-    def close_window(self):
-        self._root.destroy()
 
     def set_timer(self, count):
         self._clock["text"] = str(int((count / (1000 * 60)) % 60)) + ":" + str(int((count / 1000) % 60))
@@ -65,8 +61,11 @@ class BoardGUI:
         if count > 0:
             self._root.after(1000, self.set_timer, count - 1000)
         if count == 0:
-            self.send_message("GameOver", "Time is up!!!!!!!!!")
-            self.close_window()
+            if not messagebox.askyesno("GameOver", "Time is up!!!!!!!!! \n Do you want to play again?"):
+                self._root.destroy()
+            else:
+                self._root.destroy()
+                return True
 
 
     def _create_buttons_in_lower_frame(self, board):
@@ -94,7 +93,7 @@ class BoardGUI:
         return self._buttons[button][1]
 
     def _make_button(self, button_char, row, col, rowspan=1, columnspan=1):
-        button = tk.Button(self._letters_frame, text="", **BUTTON_STYLE)
+        button = tk.Button(self._letters_frame, text="?", **BUTTON_STYLE)
         button.grid(row=row, column=col, rowspan=rowspan, columnspan=columnspan, sticky=tk.NSEW)
         self._buttons[button] = [button_char, (row, col)]
 

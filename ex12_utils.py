@@ -66,15 +66,14 @@ def check_valid_step(coord1, coord2):
 
 def _get_word(board, path):
     word = ""
-    # if check_valid_coords(path[-1], path): ## didnt write the letter if you pressed twice
     for coord in path:
         word += board[coord[0]][coord[1]]
     return word
 
 
 def get_valid_steps(cord, path):
-    steps = [(cord[0] + 1, cord[1]), (cord[0] + 1, cord[1] + 1), (cord[0] + 1, cord[1] -1),
-                   (cord[0] - 1, cord[1]), (cord[0] - 1, cord[1] + 1), (cord[0] - 1, cord[1] -1),
+    steps = [(cord[0] + 1, cord[1]), (cord[0] + 1, cord[1] + 1), (cord[0] + 1, cord[1] - 1),
+                   (cord[0] - 1, cord[1]), (cord[0] - 1, cord[1] + 1), (cord[0] - 1, cord[1] - 1),
                    (cord[0], cord[1] + 1), (cord[0], cord[1] - 1)]
     valid_steps = set(filter(lambda x: check_valid_coords(x, path), steps))
     return valid_steps

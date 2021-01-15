@@ -2,7 +2,7 @@ import GameGUI as gui
 import ex12_utils as utls
 import boggle_board_randomizer as helper
 import tkinter as tk
-
+from tkinter import messagebox, Toplevel
 class GameController:
 
     def __init__(self, board, words_list):
@@ -70,20 +70,28 @@ class GameController:
                     print(utls.is_valid_path(self.board, self.path, self.words))
                     self.gui.pressed_enter()
                     word = utls.is_valid_path(self.board, self.path, self.words)
-                    if word and word not in self.gui.found_words_text:
+                    if word and self.words[word]:
                         self.gui.update_words_label(word)
                         score = (len(word))**2
                         self.gui.set_score(score)
+                        self.words[word] = False
                     self.path = []
             return inner
 
     def start_game(self):
         self.gui._root.mainloop()
+        if self.gui._play_again:
+            new_game()
 
 
-if __name__ == '__main__':
+def new_game():
     board = helper.randomize_board()
     words_list = utls.load_words_dict("boggle_dict.txt")
     controller = GameController(board, words_list)
-    print(controller.start_game())
+    controller.start_game()
+
+
+if __name__ == '__main__':
+    new_game()
+
 

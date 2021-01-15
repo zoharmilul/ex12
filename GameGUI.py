@@ -17,16 +17,16 @@ class BoardGUI:
 
     def __init__(self, board):
         self._root = tk.Tk()
+        self._root.geometry("540x450")
         self._board = board
         self.game_is_on = False
+        self._play_again = False
         self._word = "welcome"
         self._buttons = dict()
         self._score_value = 0
         self._outer_frame = tk.Frame(self._root)
         self._text_label = tk.Label(self._outer_frame, text=self._word, font=("arial", 30))
         self._delete_button = tk.Button(self._outer_frame, text="Delete")
-
-
         self._lower_frame = tk.Frame(self._outer_frame)
         self._letters_frame = tk.Frame(self._lower_frame)
         self._start_button = tk.Button(self._outer_frame, text="Start Game!")
@@ -35,11 +35,11 @@ class BoardGUI:
         self._clock = tk.Label(self._arttibute_frame, text="Press start to play", fg="yellow", bg="black",
                                font=("arial", 12))
         self._score_label = tk.Label(self._arttibute_frame, text="Score: " + str(self._score_value), font=('arial', 15))
-        self.found_words_text = "Found words: \n"
-        self._found_words_label = tk.Label(self._arttibute_frame, text=self.found_words_text,
+        self._found_words_label = tk.Label(self._arttibute_frame, text="Found words: ",
                                            font=("arial", 10))
-
-        # self._found_words_ = tk.Scrollbar(self._found_words_label) #todo
+        self.words_scrollbar = tk.Scrollbar(self._arttibute_frame)  # todo
+        self.scroll_text = tk.Listbox(self._arttibute_frame, yscrollcommand=self.words_scrollbar.set)
+        self.words_scrollbar.config(command=self.scroll_text.yview)
         self._enter_button = tk.Button(self._arttibute_frame, text="Enter")
         self._create_buttons_in_lower_frame(self._board)
         self.pack()
@@ -61,11 +61,10 @@ class BoardGUI:
         if count > 0:
             self._root.after(1000, self.set_timer, count - 1000)
         if count == 0:
-            if not messagebox.askyesno("GameOver", "Time is up!!!!!!!!! \n Do you want to play again?"):
-                self._root.destroy()
-            else:
-                self._root.destroy()
-                return True
+            if messagebox.askyesno("Time is up!!!!!!!!!", f"Your score is: {self._score_value} \n "
+                                                          f"Do you want to play again?"):
+                self._play_again = True
+            self._root.destroy()
 
 
     def _create_buttons_in_lower_frame(self, board):
@@ -83,8 +82,7 @@ class BoardGUI:
         self._text_label["text"] = self._word
 
     def update_words_label(self, word):
-        self.found_words_text += word + "\n"
-        self._found_words_label["text"] = self.found_words_text
+        self.scroll_text.insert(tk.END, word)
 
     def set_button_command(self, button, action):
         button.configure(command=action)
@@ -122,14 +120,15 @@ class BoardGUI:
 
     def pack(self):
         self._outer_frame.pack(fill=tk.BOTH, expand=True)
-        self._lower_frame.pack(side=tk.BOTTOM)
+        self._lower_frame.pack(side=tk.BOTTOM, expand=True, fill=tk.BOTH)
         self._start_button.pack(fill=tk.BOTH, expand=True)
         self._letters_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         self._text_label.pack(side=tk.TOP)
-        self._arttibute_frame.pack(side=tk.RIGHT)
+        self._arttibute_frame.pack(side=tk.RIGHT, expand=True, fill=tk.BOTH)
         self._clock.pack(fill=tk.X, side=tk.TOP)
         self._score_label.pack()
         self._found_words_label.pack()
-        # self._found_words_.pack(side=tk.RIGHT, fill=tk.Y) #todo
+        self.words_scrollbar.pack(side=tk.RIGHT, fill=tk.Y) #todo
+        self.scroll_text.pack()
         self._enter_button.pack(fill=tk.X)
         self._delete_button.pack(side=tk.RIGHT)

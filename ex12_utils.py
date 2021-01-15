@@ -21,7 +21,8 @@ def is_valid_path(board, path, words):
                 return
 
     word = _get_word(board, path)
-    if word in words:
+
+    if 3 <= len(word) <= 16 and word in words:
         return word
 
 

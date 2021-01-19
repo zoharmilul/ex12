@@ -17,6 +17,7 @@ class BoardGUI:
 
     def __init__(self, board):
         self._root = tk.Tk()
+        self._root.title("Best game everrrrr by your favorite students")
         self._root.geometry("540x450")
         self._board = board
         self.game_is_on = False
@@ -47,17 +48,20 @@ class BoardGUI:
     def start_game(self):
         self.game_is_on = True
         self._start_button.pack_forget()
-        print(self._board)
         self.update_text_label("")
         self.set_timer(180000)
-        for button in self._buttons:
-            cord = self.get_button_cord(button)
-            button["text"] = self._board[cord[0]][cord[1]]
+        self.set_button_text()
 
     def set_timer(self, count):
+
+        # Update the timer in the game
+
         self._clock["text"] = str(int((count / (1000 * 60)) % 60)) + ":" + str(int((count / 1000) % 60))
         if count == 30000:
+            for button in self._buttons:
+                button["text"] = "?"
             messagebox.showinfo("Time is running out", "You have 30 seconds left!")
+            self.set_button_text()
         if count > 0:
             self._root.after(1000, self.set_timer, count - 1000)
         if count == 0:
@@ -66,6 +70,11 @@ class BoardGUI:
                 self._play_again = True
             self._root.destroy()
 
+    def set_button_text(self):
+        # Change the texts on the buttons
+        for button in self._buttons:
+            cord = self.get_button_cord(button)
+            button["text"] = self._board[cord[0]][cord[1]]
 
     def _create_buttons_in_lower_frame(self, board):
         for i in range(5):

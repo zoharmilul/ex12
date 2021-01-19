@@ -1,1 +1,10 @@
-<Describe your project's features here>
+-- Delete Button --
+Allows the played to delete the last letter he pressed
+in case he pressed a doubled letter the delete button will delete all the letters added from that button
+
+-- Scroll Bar --
+After the player found a lot of words, instead for the window grow larger, we added a scrollbar and the player can scroll
+
+-- 30 seconds warning --
+When the player have 30 seconds left, a message will appear and warn him, while the message still opens
+the letters will be hidden, so the player can't look for words when the clock isn't ticking

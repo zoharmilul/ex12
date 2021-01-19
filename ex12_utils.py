@@ -21,7 +21,6 @@ def is_valid_path(board, path, words):
                 return
 
     word = _get_word(board, path)
-
     if 3 <= len(word) <= 16 and word in words:
         return word
 
@@ -29,6 +28,8 @@ def is_valid_path(board, path, words):
 def find_length_n_words(n, board, words):
     valid_path = []
     words_list = set(filter(lambda x: len(x) == n, words.keys()))
+    if not words_list:
+        return []
     for i in range(len(board)):
         for j in range(len(board[0])):
             valid_path += _find_length_helepr(n, [(i, j)], board[i][j], [], board, words_list)
@@ -76,8 +77,12 @@ def get_valid_steps(cord, path):
     steps = [(cord[0] + 1, cord[1]), (cord[0] + 1, cord[1] + 1), (cord[0] + 1, cord[1] - 1),
                    (cord[0] - 1, cord[1]), (cord[0] - 1, cord[1] + 1), (cord[0] - 1, cord[1] - 1),
                    (cord[0], cord[1] + 1), (cord[0], cord[1] - 1)]
-    valid_steps = set(filter(lambda x: check_valid_coords(x, path), steps))
-    return valid_steps
+    final_steps = []
+    for step in steps:
+        if 0 <= step[0] <=3 and 0 <= step[1] <= 3 and path.count(step) == 0:
+            final_steps.append(step)
+    # valid_steps = set(filter(lambda x: check_valid_coords(x, path), steps))
+    return final_steps
 
 
 if __name__ == "__main__":

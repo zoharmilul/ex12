@@ -28,13 +28,15 @@ class GameController:
     def delete_letter(self):
         if len(self.path) > 0:
             self.path.pop()
-        print(self.path)
 
     def update_path(self, cord):
         self.path.append(cord)
-        print(self.path)
+
 
     def create_action(self, button, type):
+
+        # Will assign each function to a button when game init
+
         if type == "letter":
 
             def inner():
@@ -67,7 +69,6 @@ class GameController:
 
             def inner():
                 if self.gui.game_is_on:
-                    print(utls.is_valid_path(self.board, self.path, self.words))
                     self.gui.pressed_enter()
                     word = utls.is_valid_path(self.board, self.path, self.words)
                     if word and self.words[word]:

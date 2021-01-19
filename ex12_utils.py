@@ -81,7 +81,6 @@ def get_valid_steps(cord, path):
     for step in steps:
         if 0 <= step[0] <=3 and 0 <= step[1] <= 3 and path.count(step) == 0:
             final_steps.append(step)
-    # valid_steps = set(filter(lambda x: check_valid_coords(x, path), steps))
     return final_steps
 
 
